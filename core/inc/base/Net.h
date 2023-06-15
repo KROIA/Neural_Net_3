@@ -2,6 +2,7 @@
 
 #include "../NeuralNet_base.h"
 
+
 #include <vector>
 
 namespace NeuralNet
