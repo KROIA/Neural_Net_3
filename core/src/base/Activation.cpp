@@ -14,6 +14,7 @@ namespace NeuralNet
 				case Type::binary: return &activate_binary;
 				case Type::gaussian: return &activate_gaussian;
 				case Type::sigmoid: return &activate_sigmoid;
+				case Type::tanh_: return &activation_tanh;
 			}
 			return activate_linear;
 		}
@@ -26,6 +27,7 @@ namespace NeuralNet
 			case Type::relu: return &activate_relu_derivetive;
 			case Type::gaussian: return &activate_gaussian_derivetive;
 			case Type::sigmoid: return &activate_sigmoid_derivetive;
+			case Type::tanh_: return &activation_tanh_derivetive;
 			}
 			return nullptr;
 		}

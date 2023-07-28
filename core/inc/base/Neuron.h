@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../NeuralNet_base.h"
-#include "base/Activation.h"
+#include "NeuralNet_base.h"
+#include "Activation.h"
 
 
 #include <vector>
@@ -46,5 +46,6 @@ namespace NeuralNet
 		Activation::Type m_activationType;
 		Activation::ActivationFunction m_activationFunction;
 	private:
+
 	};
 }

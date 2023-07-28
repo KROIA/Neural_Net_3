@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../NeuralNet_base.h"
+#include "NeuralNet_base.h"
 
 
 #include <vector>

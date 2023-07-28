@@ -1,4 +1,4 @@
-#include "NeuralNet_profiling.h"
+#include "utilities/NeuralNet_profiling.h"
 
 namespace NeuralNet
 {

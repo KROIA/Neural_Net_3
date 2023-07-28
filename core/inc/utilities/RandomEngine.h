@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../NeuralNet_base.h"
+#include "base/NeuralNet_base.h"
 
 namespace NeuralNet
 {
@@ -13,6 +13,8 @@ namespace NeuralNet
 			
 
 				static float getFloat(float min = 0, float max = 1);
+				static int getInt(int min = 0, int max = 1);
+				static int getNext();
 
 				static void setSeed(unsigned int seed);
 				static unsigned int getSeed();

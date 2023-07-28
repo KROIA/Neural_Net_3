@@ -31,5 +31,16 @@ namespace NeuralNet
 
 			return randomNumber;
 		}
+		int RandomEngine::getInt(int min, int max)
+		{
+			// Generate a random number within the given range
+			int randomNumber = min + std::rand() / (RAND_MAX / (max - min));
+
+			return randomNumber;
+		}
+		int RandomEngine::getNext()
+		{
+			return std::rand();
+		}
 	}
 }
