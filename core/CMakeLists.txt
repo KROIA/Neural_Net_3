@@ -29,6 +29,7 @@ endif()
 include(FetchContent)
 set(FETCHCONTENT_BASE_DIR "${CMAKE_SOURCE_DIR}/dependencies")
 
+# Easy Profiler
 set(BUILD_SHARED_LIBS OFF)
 set(EASY_PROFILER_NO_SAMPLES True)
 FetchContent_Declare(
@@ -37,8 +38,18 @@ FetchContent_Declare(
  GIT_TAG ${EASY_GIT_TAG}
 )
 message("Download dependency: ${EASY_GIT_REPO}")
-
 FetchContent_MakeAvailable(EASY_PROFILER)
+
+
+FetchContent_Declare(
+ LOGGER
+ GIT_REPOSITORY ${LOGGER_GIT_REPO}
+ GIT_TAG main
+)
+message("Download dependency: ${LOGGER_GIT_REPO}")
+FetchContent_MakeAvailable(LOGGER)
+
+
 
 
 
@@ -102,9 +113,9 @@ set_target_properties(Neural_Net_3_static PROPERTIES LINKER_LANGUAGE CXX  OUTPUT
 set_target_properties(Neural_Net_3_static_profile PROPERTIES LINKER_LANGUAGE CXX  OUTPUT_NAME "${Neural_Net_3_filename}-s-p" DEBUG_POSTFIX "-d")
 
 
-target_link_libraries(Neural_Net_3_shared ${Neural_Net_3_dependencies})
-target_link_libraries(Neural_Net_3_static ${Neural_Net_3_dependencies})
-target_link_libraries(Neural_Net_3_static_profile ${Neural_Net_3_dependencies} easy_profiler)
+target_link_libraries(Neural_Net_3_shared ${Neural_Net_3_dependencies} Logger_static)
+target_link_libraries(Neural_Net_3_static ${Neural_Net_3_dependencies} Logger_static)
+target_link_libraries(Neural_Net_3_static_profile ${Neural_Net_3_dependencies} easy_profiler Logger_static)
 if(NOT EASY_PROFILER_NO_GUI)
     target_link_libraries(Neural_Net_3_static_profile Qt5::Widgets)
 endif()

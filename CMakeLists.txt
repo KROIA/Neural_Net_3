@@ -7,6 +7,9 @@ project(Neural_Net_3)
 set(EASY_GIT_REPO  https://github.com/yse/easy_profiler.git)
 set(EASY_GIT_TAG   v2.1.0)
 
+set(LOGGER_GIT_REPO https://github.com/KROIA/Logger.git)
+
+
 #
 # -----------------------------------------
 #
