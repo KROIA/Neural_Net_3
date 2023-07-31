@@ -39,6 +39,8 @@ set(Files
 
 add_executable(${PROJECT_NAME} ${Files})
 
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
+
 if(NEURAL_NET_3_PROFILING)
     target_link_libraries(${PROJECT_NAME} Neural_Net_3_static_profile)
 else()

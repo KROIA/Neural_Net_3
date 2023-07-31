@@ -12,9 +12,14 @@ namespace NeuralNet
 	class NEURAL_NET_3_EXPORT Neuron
 	{
 	public:
-		Neuron();
+		Neuron(size_t id = 0);
 		Neuron(const Neuron& other);
 		virtual ~Neuron();
+
+		COPY_FUNC_DEC_BASE(Neuron);
+
+		void setID(size_t id);
+		size_t getID() const;
 
 		void setInputCount(size_t count);
 		size_t getInputCount() const;
@@ -45,6 +50,8 @@ namespace NeuralNet
 		size_t m_inputCount;
 		Activation::Type m_activationType;
 		Activation::ActivationFunction m_activationFunction;
+
+		size_t m_id;
 	private:
 
 	};

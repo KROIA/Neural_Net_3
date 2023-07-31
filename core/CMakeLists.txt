@@ -107,10 +107,10 @@ target_compile_definitions(Neural_Net_3_static PRIVATE  BUILD_STATIC NEURAL_NET_
 target_compile_definitions(Neural_Net_3_static_profile PRIVATE NEURAL_NET_3_PROFILING BUILD_STATIC NEURAL_NET_3_LIB)
 
 
-set_target_properties(easy_profiler PROPERTIES DEBUG_POSTFIX "-d")
-set_target_properties(Neural_Net_3_shared PROPERTIES LINKER_LANGUAGE CXX  OUTPUT_NAME "${Neural_Net_3_filename}" DEBUG_POSTFIX "-d")
-set_target_properties(Neural_Net_3_static PROPERTIES LINKER_LANGUAGE CXX  OUTPUT_NAME "${Neural_Net_3_filename}-s" DEBUG_POSTFIX "-d")
-set_target_properties(Neural_Net_3_static_profile PROPERTIES LINKER_LANGUAGE CXX  OUTPUT_NAME "${Neural_Net_3_filename}-s-p" DEBUG_POSTFIX "-d")
+set_target_properties(easy_profiler PROPERTIES DEBUG_POSTFIX "-d" CXX_STANDARD 17)
+set_target_properties(Neural_Net_3_shared PROPERTIES LINKER_LANGUAGE CXX  OUTPUT_NAME "${Neural_Net_3_filename}" DEBUG_POSTFIX "-d" CXX_STANDARD 17)
+set_target_properties(Neural_Net_3_static PROPERTIES LINKER_LANGUAGE CXX  OUTPUT_NAME "${Neural_Net_3_filename}-s" DEBUG_POSTFIX "-d" CXX_STANDARD 17)
+set_target_properties(Neural_Net_3_static_profile PROPERTIES LINKER_LANGUAGE CXX  OUTPUT_NAME "${Neural_Net_3_filename}-s-p" DEBUG_POSTFIX "-d" CXX_STANDARD 17)
 
 
 target_link_libraries(Neural_Net_3_shared ${Neural_Net_3_dependencies} Logger_static)

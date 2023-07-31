@@ -4,12 +4,13 @@
 
 namespace NeuralNet
 {
-	Neuron::Neuron()
+	Neuron::Neuron(size_t id)
 		: m_outputValue(0)
 		, m_netinputValue(0)
 		, m_inputCount(0)
 		, m_activationType(Activation::Type::linear)
 		, m_activationFunction(Activation::getActivationFunction(m_activationType))
+		, m_id(id)
 	{
 
 	}
@@ -21,12 +22,24 @@ namespace NeuralNet
 		, m_inputCount(other.m_inputCount)
 		, m_activationType(other.m_activationType)
 		, m_activationFunction(other.m_activationFunction)
+		, m_id(other.m_id)
 	{
 
 	}
 	Neuron::~Neuron()
 	{
 
+	}
+
+	COPY_FUNC_IMPL(Neuron);
+
+	void Neuron::setID(size_t id)
+	{
+		m_id = id;
+	}
+	size_t Neuron::getID() const
+	{
+		return m_id;
 	}
 
 	void Neuron::setInputCount(size_t count)

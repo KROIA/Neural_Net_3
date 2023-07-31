@@ -1,5 +1,6 @@
 #include "base/Net.h"
 
+
 namespace NeuralNet
 {
 	Net::Net(size_t inputCount, size_t outputCount)
@@ -17,10 +18,20 @@ namespace NeuralNet
 			m_outputValues[i] = 0;
 		}
 	}
+	Net::Net(const Net& other)
+		: m_inputValues(other.m_inputValues)
+		, m_outputValues(other.m_outputValues)
+		, m_inputCount(other.m_inputCount)
+		, m_outputCount(other.m_outputCount)
+	{
+
+	}
+
 	Net::~Net()
 	{
 
 	}
+
 
 	size_t Net::getInputCount() const
 	{
@@ -68,5 +79,15 @@ namespace NeuralNet
 		if (output >= m_inputCount)
 			return 0;
 		return m_outputValues[output];
+	}
+
+	void Net::setName(const std::string& name)
+	{
+		m_name = name;
+		LOG_INSTANCE.setName(m_name);
+	}
+	const std::string& Net::getName() const
+	{
+		return m_name;
 	}
 }
