@@ -51,7 +51,7 @@ namespace NeuralNet
 		return false;
 	}
 
-	bool NeatGenom::addConnection(const Connection& connection)
+	/*bool NeatGenom::addConnection(const Connection& connection)
 	{
 		Connection* exists = getConnection(connection.getStartID(), connection.getDestinationID());
 		if (exists) return false;
@@ -77,8 +77,8 @@ namespace NeuralNet
 	// CONNECTION
 
 	NeatGenom::Connection::Connection()
-		: m_startConnectionID(0)
-		, m_destinationConnectionID(0)
+		: m_startID(0)
+		, m_destinationID(0)
 		, m_weight(0)
 		, m_enabled(false)
 		, m_startNeuron(nullptr)
@@ -88,8 +88,8 @@ namespace NeuralNet
 	}
 	NeatGenom::Connection::Connection(size_t startID, size_t destinationID,
 									  float weight, bool enabled)
-		: m_startConnectionID(startID)
-		, m_destinationConnectionID(destinationID)
+		: m_startID(startID)
+		, m_destinationID(destinationID)
 		, m_weight(weight)
 		, m_enabled(enabled)
 		, m_startNeuron(nullptr)
@@ -99,21 +99,21 @@ namespace NeuralNet
 	}
 	NeatGenom::Connection::Connection(Neuron* start, Neuron* destination,
 		float weight, bool enabled)
-		: m_startConnectionID(0)
-		, m_destinationConnectionID(0)
+		: m_startID(0)
+		, m_destinationID(0)
 		, m_weight(weight)
 		, m_enabled(enabled)
 		, m_startNeuron(start)
 		, m_destinationNeuron(destination)
 	{
 		if (m_startNeuron)
-			m_startConnectionID = m_startNeuron->getID();
+			m_startID = m_startNeuron->getID();
 		if (m_destinationNeuron)
-			m_destinationConnectionID = m_destinationNeuron->getID();
+			m_destinationID = m_destinationNeuron->getID();
 	}
 	NeatGenom::Connection::Connection(const Connection& other)
-		: m_startConnectionID(other.m_startConnectionID)
-		, m_destinationConnectionID(other.m_destinationConnectionID)
+		: m_startID(other.m_startID)
+		, m_destinationID(other.m_destinationID)
 		, m_weight(other.m_weight)
 		, m_enabled(other.m_enabled)
 		, m_startNeuron(other.m_startNeuron)
@@ -124,16 +124,18 @@ namespace NeuralNet
 
 	void NeatGenom::Connection::setStartID(size_t id)
 	{
-		m_startConnectionID = id;
+		m_startID = id;
 	}
 	size_t NeatGenom::Connection::getStartID() const
 	{
-		return m_startConnectionID;
+		return m_startID;
 	}
 
 	void NeatGenom::Connection::setStartNeuron(Neuron* n)
 	{
 		m_startNeuron = n;
+		if (m_startNeuron)
+			m_startID = m_startNeuron->getID();
 	}
 	Neuron* NeatGenom::Connection::getStartNeuron() const
 	{
@@ -142,16 +144,18 @@ namespace NeuralNet
 
 	void NeatGenom::Connection::setDestinationID(size_t id)
 	{
-		m_destinationConnectionID = id;
+		m_destinationID = id;
 	}
 	size_t NeatGenom::Connection::getDestinationID() const
 	{
-		return m_destinationConnectionID;
+		return m_destinationID;
 	}
 
 	void NeatGenom::Connection::setDestinationNeuron(Neuron* n)
 	{
 		m_destinationNeuron = n;
+		if (m_destinationNeuron)
+			m_destinationID = m_destinationNeuron->getID();
 	}
 	Neuron* NeatGenom::Connection::getDestinationNeuron() const
 	{
@@ -174,8 +178,95 @@ namespace NeuralNet
 	bool NeatGenom::Connection::isEndabled() const
 	{
 		return m_enabled;
+	}*/
+
+	NeatGenom::NeatConnection::NeatConnection(size_t startID, size_t destinationID,
+		float weight, bool enabled)
+		: m_isEnabled(enabled)
+		, m_startID(startID)
+		, m_destinationID(destinationID)
+		, m_connection(nullptr)
+		, m_weight(weight)
+	{
+
+	}
+	
+	NeatGenom::NeatConnection::~NeatConnection()
+	{
+
 	}
 
+
+	void NeatGenom::NeatConnection::setStartID(size_t id)
+	{
+		m_startID = id;
+	}
+	size_t NeatGenom::NeatConnection::getStartID() const
+	{
+		return m_startID;
+	}
+
+	void NeatGenom::NeatConnection::setDestinationID(size_t id)
+	{
+		m_destinationID = id;
+	}
+	size_t NeatGenom::NeatConnection::getDestinationID() const
+	{
+		return m_destinationID;
+	}
+
+
+	void NeatGenom::NeatConnection::setWeight(float w)
+	{
+		m_weight = w;
+	}
+	float NeatGenom::NeatConnection::getWeight() const
+	{
+		return m_weight;
+	}
+
+	void NeatGenom::NeatConnection::setEnabled(bool en)
+	{
+		if (m_isEnabled == en)
+			return;
+		m_isEnabled = en;
+		if (!m_connection)
+			return;
+		if (m_isEnabled)
+			Neuron::addConnection(m_connection);
+		else
+			Neuron::removeConnection(m_connection);
+	}
+	bool NeatGenom::NeatConnection::isEnabled() const
+	{
+		return m_isEnabled;
+	}
+
+	
+	void NeatGenom::NeatConnection::setConnection(Connection* con)
+	{
+		m_connection = con;
+		if(m_connection)
+			m_connection->onDelete.connect_member(this, &NeatGenom::NeatConnection::onConnectionDeleted);
+	}
+	Connection* NeatGenom::NeatConnection::getConnection() const
+	{
+		return m_connection;
+	}
+	void NeatGenom::NeatConnection::onConnectionDeleted(Connection* con)
+	{
+		if(m_connection == con)
+			m_connection = nullptr;
+	}
+	bool NeatGenom::addConnection(NeatConnection* connection)
+	{
+		m_connections.push_back(connection);
+		return true;
+	}
+	const std::vector<NeatGenom::NeatConnection*>& NeatGenom::getConnections() const
+	{
+		return m_connections;
+	}
 
 
 	// NEAT NET
@@ -212,28 +303,67 @@ namespace NeuralNet
 		m_neurons.clear();
 		m_genom.clear();
 
-		std::vector<NeatGenom::Connection> connections = m_genom.getConnections();
+		bool success = true;
+		const std::vector<NeatGenom::NeatConnection*> &connections = genom.getConnections();
 		for (size_t i = 0; i < connections.size(); ++i)
 		{
-			addConnection(connections[i].getStartID(), connections[i].getDestinationID());
+			NeatGenom::NeatConnection* con = addConnection(connections[i]->getStartID(), 
+														   connections[i]->getDestinationID(),
+														   connections[i]->getWeight(), 
+														   connections[i]->isEnabled());
+			if (!con)
+				success = false;
 		}
 
 		LOG_FUNC("end");
-		return true;
+		return success;
 	}
 
-	bool NeatNet::addConnection(size_t startID, size_t destinationID)
+	NeatGenom::NeatConnection* NeatNet::addConnection(size_t startID, size_t destinationID, float weight, bool enable)
 	{
-		Neuron* start = nullptr;
-		Neuron* end = nullptr;
+		Neuron* start = getNeuron(startID);
+		Neuron* end = getNeuron(destinationID);
 
+		if (!start || !end)
+			goto error;
 
+		NeatGenom::NeatConnection *con = new NeatGenom::NeatConnection(startID, destinationID, weight, enable);
+		Connection* connection = Connection::create(start, end);
+		con->setConnection(connection);
 
-		return true;
+		if(enable)
+		if (!Neuron::addConnection(connection))
+		{
+			delete con;
+			delete connection;
+			goto error;
+		}
+
+		if (!m_genom.addConnection(con))
+		{
+			delete con;
+			delete connection;
+			goto error;
+		}
+		m_genom.addConnection(con);
+		return con;
+
+		error:
+		LOG("Can't create connection from neuron: " + std::to_string(startID) +
+			" to " + std::to_string(destinationID) +
+			" with weight: " + std::to_string(weight));
+		return nullptr;
 	}
 
 	void NeatNet::run()
 	{
 
+	}
+	Neuron* NeatNet::getNeuron(size_t id)
+	{
+		for (auto& n : m_neurons)
+			if (n->getID() == id)
+				return n;
+		return nullptr;
 	}
 }

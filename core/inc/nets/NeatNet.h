@@ -5,6 +5,7 @@
 #include "../base/Net.h"
 #include "../base/Genom.h"
 #include "../base/Neuron.h"
+#include "../base/Connection.h"
 
 namespace NeuralNet
 {
@@ -29,15 +30,15 @@ namespace NeuralNet
 		bool fromJson(const Json& data) override;
 
 
-		class NEURAL_NET_3_EXPORT Connection
+		/*class NEURAL_NET_3_EXPORT NeatConnection
 		{
 		public:
-			Connection();
-			Connection(size_t startID, size_t destinationID,
+			NeatConnection(size_t startID, size_t destinationID,
 				       float weight, bool enabled = true);
-			Connection(Neuron *start, Neuron* destination,
+			NeatConnection(Neuron *start, Neuron* destination,
 				float weight, bool enabled = true);
-			Connection(const Connection& other);
+			NeatConnection(const NeatConnection& other);
+		
 
 			void setStartID(size_t id);
 			size_t getStartID() const;
@@ -67,16 +68,53 @@ namespace NeuralNet
 			Neuron* m_destinationNeuron;
 		};
 
-		bool addConnection(const Connection &connection);
-		Connection* getConnection(size_t startID, size_t destinationID);
+		bool addConnection(const NeatConnection&connection);
+		NeatConnection* getConnection(size_t startID, size_t destinationID);
 
-		const std::vector<Connection>& getConnections() const;
+		const std::vector<NeatConnection>& getConnections() const;*/
+
+		class NEURAL_NET_3_EXPORT NeatConnection 
+		{
+		public:
+			NeatConnection(size_t startID, size_t destinationID,
+				float weight, bool enabled = true);
+
+			~NeatConnection();
+
+			void setStartID(size_t id);
+			size_t getStartID() const;
+
+			void setDestinationID(size_t id);
+			size_t getDestinationID() const;
+
+			void setWeight(float w);
+			float getWeight() const;
+
+			void setEnabled(bool en);
+			bool isEnabled() const;
+
+			void setConnection(Connection* con);
+			Connection* getConnection() const;
+		private:
+			void onConnectionDeleted(Connection* con);
+
+			bool m_isEnabled;
+			size_t m_startID;
+			size_t m_destinationID;
+			float m_weight; 
+
+			Connection* m_connection;
+		};
+
+		bool addConnection(NeatConnection* connection);
+		const std::vector<NeatConnection*>& getConnections() const;
 
 	private:
 		size_t m_inputs;
 		size_t m_outputs;
 
-		std::vector<Connection> m_connections;
+		//std::vector<NeatConnection> m_connections;
+		std::vector<NeatConnection*> m_connections;
 	};
 
 	class NEURAL_NET_3_EXPORT NeatNet: public Net
@@ -90,9 +128,11 @@ namespace NeuralNet
 
 		bool setGenom(const NeatGenom& genom);
 
-		bool addConnection(size_t startID, size_t destinationID);
+		NeatGenom::NeatConnection* addConnection(size_t startID, size_t destinationID, float weight, bool enable);
 
 		void run() override;
+
+		Neuron* getNeuron(size_t id) override;
 
 	private:
 		NeatGenom m_genom;

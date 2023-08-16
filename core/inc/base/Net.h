@@ -6,6 +6,7 @@
 
 namespace NeuralNet
 {
+	class Neuron;
 	class NEURAL_NET_3_EXPORT Net
 	{
 	public:
@@ -31,6 +32,8 @@ namespace NeuralNet
 		const std::string& getName() const;
 
 		virtual void run() = 0;
+
+		virtual Neuron* getNeuron(size_t id) = 0;
 
 	protected:
 		
